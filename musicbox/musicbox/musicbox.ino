@@ -3,7 +3,6 @@ const int RED_LED_PIN = 13;
 const int GREEN_LED_PIN = 12;
 const int BTN_PIN = 2;
 
-
 // inititlize array with all 0s.
 int ButtonStates[10] = { 0 };
 
