@@ -7,27 +7,44 @@ int btnState = 0;
 // arg[0] - button pin
 // arg[1] - button state
 typedef void (*ButtonHandler)(int, int);
+// arg[0] - button pin
+typedef void (*ButtonClickHandler)(int);
 
 // declare array
+const int ButtonHandlersLength = 0;
 ButtonHandler buttonHandlers[1];
+
+// declare array
+const int ButtonClickHandlersLength = 1;
+ButtonClickHandler buttonClickHandlers[ButtonClickHandlersLength];
 
 void setup() {
   pinMode(RED_LED_PIN, OUTPUT);
   pinMode(BTN_PIN, INPUT);
 
-  buttonHandlers[0] = &updateLed;
+  buttonClickHandlers[0] = &updateLedOnClick;
 }
 
 void loop() {
 
   int tempBtnState = digitalRead(BTN_PIN);
 
+  // button down event or up event
   if(tempBtnState != btnState){
     // button state has changed
 
-    for(int i = 0; i < 1; i++){
+    // state change
+    for(int i = 0; i < ButtonHandlersLength; i++){
       ButtonHandler handler = buttonHandlers[i];
       handler(BTN_PIN, tempBtnState);
+    }
+
+    // click
+    if(tempBtnState == HIGH){      
+      // button clicked
+      for(int i = 0; i < ButtonClickHandlersLength; i++){
+        buttonClickHandlers[i](BTN_PIN);
+      }
     }
 
     // update button state
@@ -35,10 +52,13 @@ void loop() {
   }
 }
 
-void updateLed(int btnPin, int state){
-  if(state == HIGH){
-    digitalWrite(RED_LED_PIN, HIGH);  
-  }else{
-    digitalWrite(RED_LED_PIN, LOW);
-  }
+int ledState = LOW;
+void updateLedOnClick(int btnPin){
+    if(ledState == LOW){
+      ledState = HIGH;
+    }else{
+      ledState = LOW;
+    }
+
+    digitalWrite(RED_LED_PIN, ledState);
 }
