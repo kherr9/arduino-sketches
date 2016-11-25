@@ -1,7 +1,8 @@
 
 const int RED_LED_PIN = 13;
+const int GREEN_LED_PIN = 12;
 const int BTN_PIN = 2;
-int btnState = 0;
+
 
 // inititlize array with all 0s.
 int ButtonStates[10] = { 0 };
@@ -12,8 +13,8 @@ int ButtonStates[10] = { 0 };
 typedef void (*ButtonEventHandler)(int, int);
 
 // declare array
-const int ButtonHandlersLength = 0;
-ButtonEventHandler buttonHandlers[1];
+const int ButtonHandlersLength = 1;
+ButtonEventHandler buttonHandlers[ButtonHandlersLength];
 
 // declare array
 const int ButtonClickHandlersLength = 1;
@@ -21,8 +22,10 @@ ButtonEventHandler buttonClickHandlers[ButtonClickHandlersLength];
 
 void setup() {
   pinMode(RED_LED_PIN, OUTPUT);
+  pinMode(GREEN_LED_PIN, OUTPUT);
   pinMode(BTN_PIN, INPUT);
 
+  buttonHandlers[0] = &updateGreenLedOnChange;
   buttonClickHandlers[0] = &updateLedOnClick;
 }
 
@@ -61,8 +64,12 @@ void checkButtonState(int btnPin){
   }
 }
 
+void updateGreenLedOnChange(int btnPin, int state){
+    digitalWrite(GREEN_LED_PIN, state);
+}
+
 int ledState = LOW;
-void updateLedOnClick(int btnPin){
+void updateLedOnClick(int btnPin, int state){
     if(ledState == LOW){
       ledState = HIGH;
     }else{
