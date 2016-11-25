@@ -3,6 +3,9 @@ const int RED_LED_PIN = 13;
 const int BTN_PIN = 2;
 int btnState = 0;
 
+// inititlize array with all 0s.
+int ButtonStates[10] = { 0 };
+
 // declare type for button handler
 // arg[0] - button pin
 // arg[1] - button state
@@ -26,29 +29,38 @@ void setup() {
 }
 
 void loop() {
+  checkButtonState(BTN_PIN);
+}
 
-  int tempBtnState = digitalRead(BTN_PIN);
+void checkButtonState(int btnPin){
 
-  // button down event or up event
-  if(tempBtnState != btnState){
+  // get current button state
+  int currentBtnState = digitalRead(btnPin);
+
+  // get previous button state
+  int previousBtnState = ButtonStates[btnPin];
+
+  // if the btn state has changed...
+  if(currentBtnState != previousBtnState){
     // button state has changed
 
-    // state change
+    // raise state change event
     for(int i = 0; i < ButtonHandlersLength; i++){
       ButtonHandler handler = buttonHandlers[i];
-      handler(BTN_PIN, tempBtnState);
+      handler(BTN_PIN, currentBtnState);
     }
 
-    // click
-    if(tempBtnState == HIGH){      
-      // button clicked
+    // if click
+    if(currentBtnState == HIGH){      
+
+      // raise click event
       for(int i = 0; i < ButtonClickHandlersLength; i++){
         buttonClickHandlers[i](BTN_PIN);
       }
     }
 
     // update button state
-    btnState = tempBtnState;
+    ButtonStates[btnPin] = currentBtnState;
   }
 }
 
