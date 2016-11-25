@@ -9,17 +9,15 @@ int ButtonStates[10] = { 0 };
 // declare type for button handler
 // arg[0] - button pin
 // arg[1] - button state
-typedef void (*ButtonHandler)(int, int);
-// arg[0] - button pin
-typedef void (*ButtonClickHandler)(int);
+typedef void (*ButtonEventHandler)(int, int);
 
 // declare array
 const int ButtonHandlersLength = 0;
-ButtonHandler buttonHandlers[1];
+ButtonEventHandler buttonHandlers[1];
 
 // declare array
 const int ButtonClickHandlersLength = 1;
-ButtonClickHandler buttonClickHandlers[ButtonClickHandlersLength];
+ButtonEventHandler buttonClickHandlers[ButtonClickHandlersLength];
 
 void setup() {
   pinMode(RED_LED_PIN, OUTPUT);
@@ -46,8 +44,7 @@ void checkButtonState(int btnPin){
 
     // raise state change event
     for(int i = 0; i < ButtonHandlersLength; i++){
-      ButtonHandler handler = buttonHandlers[i];
-      handler(BTN_PIN, currentBtnState);
+      buttonHandlers[i](btnPin, currentBtnState);
     }
 
     // if click
@@ -55,7 +52,7 @@ void checkButtonState(int btnPin){
 
       // raise click event
       for(int i = 0; i < ButtonClickHandlersLength; i++){
-        buttonClickHandlers[i](BTN_PIN);
+        buttonClickHandlers[i](btnPin, currentBtnState);
       }
     }
 
