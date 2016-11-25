@@ -42,14 +42,13 @@ void checkButtonState(int btnPin){
 
   // if the btn state has changed...
   if(currentBtnState != previousBtnState){
-    // button state has changed
 
     // raise state change event
     for(int i = 0; i < ButtonHandlersLength; i++){
       buttonHandlers[i](btnPin, currentBtnState);
     }
 
-    // if click
+    // if button pressed...
     if(currentBtnState == HIGH){      
 
       // raise click event
