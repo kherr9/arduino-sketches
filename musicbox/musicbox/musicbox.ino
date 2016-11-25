@@ -14,16 +14,25 @@ void loop() {
 
   if(tempBtnState != btnState){
     // button state has changed
-    if(btnState == LOW){
-      // button down
-      // turn on led
-      digitalWrite(RED_LED_PIN, HIGH);
-    }else{
-      // button up
-      // turn off led
-      digitalWrite(RED_LED_PIN, LOW);
-    }
-    
+
+    // delcare function pointer
+    void (*functionPtr)(int);
+
+    // assign function pointer
+    functionPtr = &updateLed;
+
+    // invoke function pointer
+    (*functionPtr)(btnState);
+
+    // update button state
     btnState = tempBtnState;
+  }
+}
+
+void updateLed(int state){
+  if(state == LOW){
+    digitalWrite(RED_LED_PIN, HIGH);  
+  }else{
+    digitalWrite(RED_LED_PIN, LOW);
   }
 }
