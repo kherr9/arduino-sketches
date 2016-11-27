@@ -12,7 +12,7 @@ void MusicPlayer::play(Note notes[], int length){
 		
 		Note note = notes[i];
 		
-		tone(_pin, note.getFrequency());
+		tone(_pin, note.note);
 		delay(note.getDuration());
 		noTone(_pin);
 	}

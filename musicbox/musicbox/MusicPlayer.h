@@ -11,7 +11,14 @@ enum NoteLength {
 };
 
 enum Notes {
-  g3,a3,b3,c4,d4,e4,f4,g4  
+  g3 = 196,
+  a3 = 220,
+  b3 = 247,
+  c4 = 261,
+  d4 = 294,
+  e4 = 330,
+  f4 = 349,
+  g4 = 392 
 };
 
 struct Note {
@@ -21,29 +28,6 @@ struct Note {
 	Note(Notes note, NoteLength length){
 		this->note = note;
 		this->length = length;
-	}
-	
-	unsigned int getFrequency(){
-		switch(note){
-		  case g3:
-			return 196;
-		  case a3:
-			return 220;
-		  case b3:
-			return 247;
-		  case c4:
-			return 261;
-		  case d4:
-			return 294;
-		  case e4:
-			return 330;
-		  case f4:
-			return 349;
-		  case g4:
-			return 392;
-		  default:
-			return 0;
-		}
 	}
 
 	unsigned long getDuration(){
