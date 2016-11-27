@@ -66,7 +66,7 @@ struct Note {
 class MusicPlayer {
 	public:
 		MusicPlayer(int pin);
-		void play(Note notes[]);
+		void play(Note notes[], int length);
 	private:
 		int _pin;
 };

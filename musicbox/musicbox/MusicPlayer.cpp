@@ -6,10 +6,7 @@ MusicPlayer::MusicPlayer(int pin){
 	_pin = pin;
 }
 
-void MusicPlayer::play(Note notes[]){
-	
-	// todo: hard coded
-	int length = 6;
+void MusicPlayer::play(Note notes[], int length){
 	
 	for(int i = 0; i < length; i++){
 		
@@ -20,4 +17,3 @@ void MusicPlayer::play(Note notes[]){
 		noTone(_pin);
 	}
 }
-
