@@ -14,7 +14,7 @@ enum NoteLength {
 };
 
 enum Notes {
-  g3,a3,b3,c4,d4,e4,f4,g4 // middle C  
+  g3,a3,b3,c4,d4,e4,f4,g4  
 };
 
 struct Note {
@@ -67,7 +67,6 @@ struct Note {
 };
 
 void play(Note notes[], int length){
-  Serial.println(length);
   for(int i = 0; i < length; i++){
     play(notes[i]);
   }  
@@ -78,6 +77,14 @@ void play(Note note){
   delay(note.getDuration());
   noTone(BUZZER_PIN);
 }
+
+Note arpeggio[] = {
+  {c4, Quarter},
+  {e4, Quarter},
+  {g4, Quarter},
+  {e4, Quarter},
+  {c4, Half}  
+};
 
 Note maryHadALittleLamb[] = {
   {b3, Quarter},
@@ -127,18 +134,7 @@ void onChange(int btnPin, int state){
 }
 
 void onClick(int btnPin, int state){
-  int length = sizeof maryHadALittleLamb / sizeof maryHadALittleLamb[0];
-  play(maryHadALittleLamb, length);  
+  int length = sizeof arpeggio / sizeof arpeggio[0];
+  play(arpeggio, length);  
 }
 
-/*
-int ledState = LOW;
-void onClick(int btnPin, int state){
-  if(ledState == LOW){
-    ledState = HIGH;
-  }else{
-    ledState=  LOW;
-  }
-  digitalWrite(RED_LED_PIN, ledState);
-}
-*/
