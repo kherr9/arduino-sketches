@@ -24,33 +24,16 @@ enum Notes {
 struct Note {
 	NoteLength length;
 	Notes note;
-	
 	Note(Notes note, NoteLength length){
 		this->note = note;
 		this->length = length;
-	}
-
-	unsigned long getDuration(){
-		long tempo = 300;
-		switch(length){
-		  case Eigth:
-			return tempo/2;
-		  case Quarter:
-			return tempo;
-		  case Half:
-			return tempo * 2;
-		  case Whole:
-			return tempo * 4;
-		  default:
-			return 0;
-		}
 	}
 };
 
 class MusicPlayer {
 	public:
 		MusicPlayer(int pin);
-		void play(Note notes[], int length);
+		void play(Note notes[], int length, int bpm);
 	private:
 		int _pin;
 };
