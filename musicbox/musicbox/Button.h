@@ -12,8 +12,12 @@ class Button {
 	private:
 		int _pin;
 		int _state;
+		int _previousState;
+		unsigned long _previousDebounceTime;
+		unsigned long _debounceDelay;
 		void (*_onChange)(int, int);
 		void (*_onClick)(int, int);
+		void onStateChange(int, int);
 };
 
 #endif
