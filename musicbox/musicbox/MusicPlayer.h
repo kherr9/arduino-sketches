@@ -37,6 +37,7 @@ class MusicPlayer {
 		void update();
 	private:
 		int _pin;
+		Notes _notes[];
 };
 
 #endif

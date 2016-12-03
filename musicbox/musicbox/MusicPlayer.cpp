@@ -34,8 +34,15 @@ void MusicPlayer::play(Note notes[], int length, int bpm){
 		delay(calcLengthDuration(note.length, tempoMs));
 		noTone(_pin);
 	}
+	
+	_notes = notes;
+	_notesLength = length;
+	_bpm = bpm;
+	_tempoMs = 60000 / bpm;
+	_noteIndex = 0;
 }
 
 void MusicPlayer::update(){
 	// do nothing
+	
 }
