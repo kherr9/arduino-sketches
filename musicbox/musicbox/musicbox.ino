@@ -57,6 +57,7 @@ void setup() {
 
 void loop() {
   button.update();
+  musicPlayer.update();
 }
 
 void onChange(int btnPin, int state){

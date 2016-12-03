@@ -35,3 +35,7 @@ void MusicPlayer::play(Note notes[], int length, int bpm){
 		noTone(_pin);
 	}
 }
+
+void MusicPlayer::update(){
+	// do nothing
+}
