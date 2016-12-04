@@ -39,12 +39,12 @@ void MusicPlayer::update(){
 bool MusicPlayer::isPlaying(){
 	return _isPlaying;
 }
-
+*/
 void MusicPlayer::stop(){
 	noTone(_pin);
-	_isPlaying = true;
+	_isPlaying = false;
 }
-*/
+
 void MusicPlayer::nextNote(){
 	_noteIndex++;
 	
@@ -63,7 +63,6 @@ void MusicPlayer::nextNote(){
 		_nextTime = millis() + noteLength;
 	}else{
 		// end of song
-		noTone(_pin);
-		_isPlaying = false;
+		stop();
 	}
 }
