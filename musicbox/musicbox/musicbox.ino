@@ -3,7 +3,6 @@
 
 const int RED_LED_PIN = 13;
 const int GREEN_LED_PIN = 12;
-const int BUZZER_PIN = 7;
 
 Button button(2);
 MusicPlayer musicPlayer(7);
@@ -46,10 +45,9 @@ Note maryHadALittleLamb[] = {
 };
 
 void setup() {
-  Serial.begin(9600);
+  //Serial.begin(9600);
   pinMode(RED_LED_PIN, OUTPUT);
   pinMode(GREEN_LED_PIN, OUTPUT);
-  pinMode(BUZZER_PIN, OUTPUT);
   
   button.onChange(onChange);
   button.onClick(onClick);
@@ -58,6 +56,12 @@ void setup() {
 void loop() {
   button.update();
   musicPlayer.update();
+
+  if(musicPlayer.isPlaying()){
+    digitalWrite(RED_LED_PIN, HIGH);
+  }else{
+    digitalWrite(RED_LED_PIN, LOW);
+  }
 }
 
 void onChange(int btnPin, int state){
