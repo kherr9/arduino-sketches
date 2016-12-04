@@ -13,7 +13,7 @@ BTD Btd(&Usb); // You have to create the Bluetooth Dongle instance like so
 //WII Wii(&Btd, PAIR); // This will start an inquiry and then pair with your Wiimote - you only have to do this once
 WII Wii(&Btd); // After that you can simply create the instance like so and then press any button on the Wiimote
 
-bool printAngle;
+bool printAngle = false;
 
 void setup() {
   Serial.begin(9600);
@@ -57,7 +57,6 @@ void loop() {
 
       if (Wii.getButtonClick(PLUS)){
         Serial.print(F("\r\nPlus"));
-        Serial.println(Btd.GetAddress());
       }
       if (Wii.getButtonClick(MINUS))
         Serial.print(F("\r\nMinus"));
@@ -76,7 +75,7 @@ void loop() {
         Serial.print(F("\r\nB"));
       }
     }
-#if 0 // Set this to 1 in order to see the angle of the controllers
+#if 1 // Set this to 1 in order to see the angle of the controllers
     if (printAngle) {
       Serial.print(F("\r\nPitch: "));
       Serial.print(Wii.getPitch());
