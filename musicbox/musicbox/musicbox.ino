@@ -65,6 +65,7 @@ void onChange(int btnPin, int state){
 }
 
 void onClick(int btnPin, int state){
+  // play song
   int length = sizeof arpeggio / sizeof arpeggio[0];
   musicPlayer.play(arpeggio, length, 160);
 }

@@ -37,7 +37,14 @@ class MusicPlayer {
 		void update();
 	private:
 		int _pin;
-		Notes _notes[];
+		Note* _notes;
+		int _notesLength;
+		int _bpm;
+		int _tempoMs;
+		int _noteIndex;
+		unsigned long _nextTime;
+		bool _isPlaying;
+		void nextNote();
 };
 
 #endif
