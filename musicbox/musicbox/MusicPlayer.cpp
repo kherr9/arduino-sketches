@@ -35,9 +35,23 @@ void MusicPlayer::update(){
 		nextNote();
 	}
 }
+/*
+bool MusicPlayer::isPlaying(){
+	return _isPlaying;
+}
 
+void MusicPlayer::stop(){
+	noTone(_pin);
+	_isPlaying = true;
+}
+*/
 void MusicPlayer::nextNote(){
 	_noteIndex++;
+	
+	Serial.println("||");
+	Serial.println(_noteIndex);
+	Serial.println(_notesLength);
+	Serial.println("||");
 	
 	if(_noteIndex < _notesLength){
 		// play note
