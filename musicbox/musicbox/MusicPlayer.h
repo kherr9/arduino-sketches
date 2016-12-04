@@ -34,8 +34,8 @@ class MusicPlayer {
 	public:
 		MusicPlayer(int pin);
 		void play(Note notes[], int length, int bpm);
-		void update();/*
-		bool isPlaying();*/
+		void update();
+		bool isPlaying();
 		void stop();
 	private:
 		int _pin;
