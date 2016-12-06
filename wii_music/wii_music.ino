@@ -10,8 +10,8 @@ USB Usb;
 
 BTD Btd(&Usb); // You have to create the Bluetooth Dongle instance like so
 /* You can create the instance of the class in two ways */
-//WII Wii(&Btd, PAIR); // This will start an inquiry and then pair with your Wiimote - you only have to do this once
-WII Wii(&Btd); // After that you can simply create the instance like so and then press any button on the Wiimote
+WII Wii(&Btd, PAIR); // This will start an inquiry and then pair with your Wiimote - you only have to do this once
+//WII Wii(&Btd); // After that you can simply create the instance like so and then press any button on the Wiimote
 
 void setup() {
   Serial.begin(9600);
@@ -67,9 +67,19 @@ void loop() {
 
     if(toneEnabled){
       // read gyro
+      int pitch = Wii.getPitch();
+      Serial.println(pitch);
       // convert gyro to pitch
       // set tone
-      tone(BUZZER_PIN, c4); 
+      int frequency = c4;
+      if(pitch > 180)
+        frequency = c4;
+      else if (pitch > 90)
+        frequency = e4;
+      else if (pitch > 0)
+        frequency = g4;
+      
+      tone(BUZZER_PIN, frequency); 
     }
   }
 
