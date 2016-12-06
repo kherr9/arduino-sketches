@@ -2,6 +2,8 @@
 #include <Wii.h>
 
 const int BUZZER_PIN = 8;
+const int ON_LED_PIN = 6;
+const int CONNECTED_LED_PIN = 5;
 
 USB Usb;
 //USBHub Hub1(&Usb); // Some dongles have a hub inside
@@ -20,7 +22,12 @@ void setup() {
     Serial.print(F("\r\nOSC did not start"));
     while (1); //halt
   }
-  pinMode(BUZZER_PIN, OUTPUT);  
+  pinMode(BUZZER_PIN, OUTPUT);
+  pinMode(ON_LED_PIN, OUTPUT);  
+  pinMode(CONNECTED_LED_PIN, OUTPUT);
+
+  digitalWrite(ON_LED_PIN, HIGH);
+  digitalWrite(CONNECTED_LED_PIN, LOW);
 }
 
 enum Notes {
@@ -37,15 +44,27 @@ enum Notes {
 void loop() {
   Usb.Task();
   if (Wii.wiimoteConnected) {
-    Wii.setLedOn(LED1);
-    Wii.setLedOff(LED2);
-    Wii.setLedOn(LED3);
-    Wii.setLedOff(LED4);
-    if(Wii.getButtonClick(LEFT)){
-      tone(BUZZER_PIN, c4);  
-    }
-    if(Wii.getButtonClick(DOWN)){
-      noTone(BUZZER_PIN);
-    }
+    //Wii.setLedOn(LED1);
+    //Wii.setLedOff(LED2);
+    //Wii.setLedOn(LED3);
+    //Wii.setLedOff(LED4);
+    //if(Wii.getButtonClick(LEFT)){
+    //  tone(BUZZER_PIN, c4);  
+    //}
+    //if(Wii.getButtonClick(DOWN)){
+    //  noTone(BUZZER_PIN);
+    //}
   }
+  //digitalWrite(GREEN_LED_PIN, HIGH);
+  updateBluetoothConnectedState();
 }
+
+bool hasConnected = false;
+void updateBluetoothConnectedState(){
+  bool isConnected = Wii.wiimoteConnected;
+  if(isConnected != hasConnected){
+    digitalWrite(CONNECTED_LED_PIN, isConnected ? HIGH : LOW);
+    hasConnected = isConnected;
+    Serial.println("Bluetooth has connected");
+  }  
+};
