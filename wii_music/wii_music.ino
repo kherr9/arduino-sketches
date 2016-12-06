@@ -1,7 +1,7 @@
 #include <usbhub.h>
 #include <Wii.h>
 
-const int BUZZER_PIN = 8;
+const int BUZZER_PIN = 4;
 const int ON_LED_PIN = 6;
 const int CONNECTED_LED_PIN = 5;
 
@@ -22,6 +22,7 @@ void setup() {
     Serial.print(F("\r\nOSC did not start"));
     while (1); //halt
   }
+  
   pinMode(BUZZER_PIN, OUTPUT);
   pinMode(ON_LED_PIN, OUTPUT);  
   pinMode(CONNECTED_LED_PIN, OUTPUT);
@@ -41,6 +42,8 @@ enum Notes {
   g4 = 392 
 };
 
+bool toneEnabled = false;
+
 void loop() {
   Usb.Task();
   if (Wii.wiimoteConnected) {
@@ -54,7 +57,22 @@ void loop() {
     //if(Wii.getButtonClick(DOWN)){
     //  noTone(BUZZER_PIN);
     //}
+
+    if(Wii.getButtonClick(B)){
+      toneEnabled = !toneEnabled;
+      if(toneEnabled == false){
+        noTone(BUZZER_PIN);
+      }
+    }
+
+    if(toneEnabled){
+      // read gyro
+      // convert gyro to pitch
+      // set tone
+      tone(BUZZER_PIN, c4); 
+    }
   }
+
   //digitalWrite(GREEN_LED_PIN, HIGH);
   updateBluetoothConnectedState();
 }
