@@ -31,17 +31,6 @@ void setup() {
   digitalWrite(CONNECTED_LED_PIN, LOW);
 }
 
-enum Notes {
-  g3 = 196,
-  a3 = 220,
-  b3 = 247,
-  c4 = 261,
-  d4 = 294,
-  e4 = 330,
-  f4 = 349,
-  g4 = 392 
-};
-
 bool toneEnabled = false;
 
 void loop() {
@@ -68,23 +57,63 @@ void loop() {
     if(toneEnabled){
       // read gyro
       int pitch = Wii.getPitch();
-      Serial.println(pitch);
+      //Serial.println(pitch);
       // convert gyro to pitch
       // set tone
-      int frequency = c4;
-      if(pitch > 180)
-        frequency = c4;
-      else if (pitch > 90)
-        frequency = e4;
-      else if (pitch > 0)
-        frequency = g4;
+      int frequency = getFrequency(pitch);
       
       tone(BUZZER_PIN, frequency); 
     }
   }
 
-  //digitalWrite(GREEN_LED_PIN, HIGH);
   updateBluetoothConnectedState();
+}
+
+enum Notes {
+  g3 = 196,
+  a3 = 220,
+  b3 = 247,
+  c4 = 261,
+  d4 = 294,
+  e4 = 330,
+  f4 = 349,
+  g4 = 392 
+};
+
+// pitch will range from 0 - 360 where the apex is 180
+int getFrequency(int pitch){
+
+  /*
+  Serial.print("pitch: ");
+  Serial.print(pitch);
+  */
+  
+  // shift pitch by 90
+  // so that 180 is apex
+  if((pitch+= 90) > 360){
+    pitch-=360;
+  }
+  
+  // 190 -> 170
+  // 55 -> 55
+  if(pitch > 180){
+    pitch = 360 - pitch;  
+  }
+
+  /*
+  Serial.print("\tval: ");
+  Serial.print(pitch);
+  Serial.println();
+  */
+
+  return (pitch + 100) * 3;// + 300;
+  
+  if(pitch > 180)
+    return c4;
+  else if (pitch > 90)
+    return e4;
+  else if (pitch > 0)
+    return g4;
 }
 
 bool hasConnected = false;
