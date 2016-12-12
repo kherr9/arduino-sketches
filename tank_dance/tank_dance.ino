@@ -26,10 +26,16 @@
 
 // Pin Assignments //
 // Don't change these! These pins are statically defined by shield layout
+//const byte PWMA = 3;  // PWM control (speed) for motor A
+//const byte PWMB = 11; // PWM control (speed) for motor B
+//const byte DIRA = 12; // Direction control for motor A
+//const byte DIRB = 13; // Direction control for motor B
+
+// when hit wired with usb shield
 const byte PWMA = 3;  // PWM control (speed) for motor A
-const byte PWMB = 11; // PWM control (speed) for motor B
-const byte DIRA = 12; // Direction control for motor A
-const byte DIRB = 13; // Direction control for motor B
+const byte PWMB = 5; // PWM control (speed) for motor B
+const byte DIRA = 2; // Direction control for motor A
+const byte DIRB = 4; // Direction control for motor B
 
 void setup()
 {
