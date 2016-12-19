@@ -13,7 +13,7 @@ Light It Up Sketch
 
 const int DialSensitivity = 150;
 const int variance=100;
-const int dim=625;
+const int dim=600;
 const int lessdim= dim+variance;
 const int leastdim = lessdim+variance;
 
