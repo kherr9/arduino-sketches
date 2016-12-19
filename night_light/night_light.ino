@@ -9,7 +9,7 @@ int ledPin3=9;
 int sensorPin=A0;
 
 int variance=100;
-int dim=600;
+int dim=625;
 int lessdim= dim+variance;
 int leastdim = lessdim+variance;
 
