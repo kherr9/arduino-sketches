@@ -3,10 +3,10 @@ Light It Up Sketch
 */
 
 
-const int ledPin1=7;
-const int ledPin2=8;
-const int ledPin3=9;
-const int sensorPin=A0;
+#define ledPin1 7
+#define ledPin2 8
+#define ledPin3 9
+#define sensorPin A0
 
 const int variance=100;
 const int dim=625;
