@@ -30,22 +30,23 @@ void setup() {
 void loop() {
 
     int sound = digitalRead(sensorPin);
-    int light = digitalRead(ledPin1);
-
+    
     //if a sound is heard, and the LEDs are off, turn them on,
-    if (sound == HIGH && light==LOW){
+    if(sound == HIGH){
+      // sound is heard
+      int light = digitalRead(ledPin1);
+
+      if(light == LOW){
         delay(250);
         digitalWrite(ledPin1, HIGH);
         digitalWrite(ledPin2, HIGH);
         digitalWrite(ledPin3, HIGH);
-    }
-    //if a sound is heard, and the LEDs are on, turn them off, 
-     if (sound == HIGH && light==HIGH){
+      }else{
         delay(250);
         digitalWrite(ledPin1, LOW);
         digitalWrite(ledPin2, LOW);
         digitalWrite(ledPin3, LOW);
+      }
     }
-    //otherwise, do nothing. 
 }
 
