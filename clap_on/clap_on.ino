@@ -34,19 +34,12 @@ void loop() {
     //if a sound is heard, and the LEDs are off, turn them on,
     if(sound == HIGH){
       // sound is heard
-      int light = digitalRead(ledPin1);
+      int val = !digitalRead(ledPin1);
 
-      if(light == LOW){
-        delay(250);
-        digitalWrite(ledPin1, HIGH);
-        digitalWrite(ledPin2, HIGH);
-        digitalWrite(ledPin3, HIGH);
-      }else{
-        delay(250);
-        digitalWrite(ledPin1, LOW);
-        digitalWrite(ledPin2, LOW);
-        digitalWrite(ledPin3, LOW);
-      }
+      digitalWrite(ledPin1, val);
+      digitalWrite(ledPin2, val);
+      digitalWrite(ledPin3, val);
+      delay(250);
     }
 }
 
