@@ -2,6 +2,8 @@
 Light It Up Sketch
 */
 
+// 0 false; 1 true
+#define debug 0
 
 #define ledPin1 7
 #define ledPin2 8
@@ -18,8 +20,10 @@ void setup() {
   pinMode(ledPin2, OUTPUT);
   pinMode(ledPin3, OUTPUT);
   pinMode(sensorPin, INPUT);
-  
-  Serial.begin(9600);
+
+  if(debug){
+    Serial.begin(9600);
+  }
 }
 
 void loop() {
@@ -27,7 +31,10 @@ void loop() {
     // read the amount of light in the room
     // returns value from 0 - 1023
     int sensorValue= analogRead(sensorPin);
-    Serial.println(sensorValue);
+
+    if(debug){
+      Serial.println(sensorValue);
+    }
     
     // If the room is really dark, turn on all three LEDS
     if (sensorValue<dim){
