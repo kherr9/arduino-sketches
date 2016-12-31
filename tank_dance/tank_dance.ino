@@ -1,114 +1,79 @@
-    /* Ardumoto Example Sketch
-  by: Jim Lindblom
-  date: November 8, 2013
-  license: Public domain. Please use, reuse, and modify this 
-  sketch!
+const int STBY = 9;
 
-  Three useful functions are defined:
-    setupArdumoto() -- Setup the Ardumoto Shield pins
-    driveArdumoto([motor], [direction], [speed]) -- Drive [motor] 
-      (0 for A, 1 for B) in [direction] (0 or 1) at a [speed]
-      between 0 and 255. It will spin until told to stop.
-    stopArdumoto([motor]) -- Stop driving [motor] (0 or 1).
+// Motor A
+const int PWMA = 3; // speed control
+const int AIN1 = 2; // direction
+const int AIN2 = 4; // direction
 
-  setupArdumoto() is called in the setup().
-  The loop() demonstrates use of the motor driving functions.
-*/
-
-// Clockwise and counter-clockwise definitions.
-// Depending on how you wired your motors, you may need to swap.
-#define CW  0
-#define CCW 1
-
-// Motor definitions to make life easier:
-#define MOTOR_A 0
-#define MOTOR_B 1
-
-// Pin Assignments //
-// Don't change these! These pins are statically defined by shield layout
-//const byte PWMA = 3;  // PWM control (speed) for motor A
-//const byte PWMB = 11; // PWM control (speed) for motor B
-//const byte DIRA = 12; // Direction control for motor A
-//const byte DIRB = 13; // Direction control for motor B
-
-// when hit wired with usb shield
-const byte PWMA = 3;  // PWM control (speed) for motor A
-const byte PWMB = 5; // PWM control (speed) for motor B
-const byte DIRA = 2; // Direction control for motor A
-const byte DIRB = 4; // Direction control for motor B
+// Motor B
+const int PWMB = 6; // speed control
+const int BIN1 = 5; // direction
+const int BIN2 = 10; // direction
 
 void setup()
 {
-  setupArdumoto(); // Set all pins as outputs
-  delay(5000);
+  pinMode(STBY, OUTPUT);
+
+  pinMode(PWMA, OUTPUT);
+  pinMode(AIN1, OUTPUT);
+  pinMode(AIN2, OUTPUT);
+  
+  pinMode(PWMB, OUTPUT);
+  pinMode(BIN1, OUTPUT);
+  pinMode(BIN2, OUTPUT);
 }
 
 void loop()
 {
-  // go forward
-  driveArdumoto(MOTOR_A, CW, 75);
-  driveArdumoto(MOTOR_B, CW, 75);
-  
-  delay(3000);
+  move(1, 255, 1); //motor 1, full speed, left
+  move(2, 255, 1); //motor 2, full speed, left
 
-  // turn
-  driveArdumoto(MOTOR_A, CCW, 127);
-  driveArdumoto(MOTOR_B, CW, 127);
+  delay(1000); //go for 1 second
+  stop(); //stop
+  delay(250); //hold for 250ms until move again
 
-  delay(3000);
+  move(1, 128, 0); //motor 1, half speed, right
+  move(2, 128, 0); //motor 2, half speed, right
 
-  // turn
-  driveArdumoto(MOTOR_A, CW, 127);
-  driveArdumoto(MOTOR_B, CCW, 127);
-
-  delay(3000);
-  
-  // go backwards
-  driveArdumoto(MOTOR_A, CCW, 75);
-  driveArdumoto(MOTOR_B, CCW, 75);
-
-  delay(3000);
-
-  stopArdumoto(MOTOR_A);
-  stopArdumoto(MOTOR_B);
-
-  delay(2000);
+  delay(1000);
+  stop();
+  delay(250);
 }
 
-// driveArdumoto drives 'motor' in 'dir' direction at 'spd' speed
-void driveArdumoto(byte motor, byte dir, byte spd)
+
+void move(int motor, int speed, int direction)
 {
-  if (motor == MOTOR_A)
-  {
-    digitalWrite(DIRA, dir);
-    analogWrite(PWMA, spd);
+  //Move specific motor at speed and direction
+  //motor: 0 for B 1 for A
+  //speed: 0 is off, and 255 is full speed
+  //direction: 0 clockwise, 1 counter-clockwise
+
+  digitalWrite(STBY, HIGH); //disable standby
+
+  boolean inPin1 = LOW;
+  boolean inPin2 = HIGH;
+
+  if(direction == 1){
+    inPin1 = HIGH;
+    inPin2 = LOW;
   }
-  else if (motor == MOTOR_B)
-  {
-    digitalWrite(DIRB, dir);
-    analogWrite(PWMB, spd);
-  }  
+
+  if(motor == 1){
+    digitalWrite(AIN1, inPin1);
+    digitalWrite(AIN2, inPin2);
+    analogWrite(PWMA, speed);
+  }else{
+    digitalWrite(BIN1, inPin1);
+    digitalWrite(BIN2, inPin2);
+    analogWrite(PWMB, speed);
+  }
 }
 
-// stopArdumoto makes a motor stop
-void stopArdumoto(byte motor)
+void stop()
 {
-  driveArdumoto(motor, 0, 0);
+  //enable standby  
+  digitalWrite(STBY, LOW); 
 }
 
-// setupArdumoto initialize all pins
-void setupArdumoto()
-{
-  // All pins should be setup as outputs:
-  pinMode(PWMA, OUTPUT);
-  pinMode(PWMB, OUTPUT);
-  pinMode(DIRA, OUTPUT);
-  pinMode(DIRB, OUTPUT);
 
-  // Initialize all pins as low:
-  digitalWrite(PWMA, LOW);
-  digitalWrite(PWMB, LOW);
-  digitalWrite(DIRA, LOW);
-  digitalWrite(DIRB, LOW);
-}
 
