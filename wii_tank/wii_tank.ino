@@ -23,22 +23,20 @@
 #define CW  0
 #define CCW 1
 
-// Motor definitions to make life easier:
 #define MOTOR_A 0
 #define MOTOR_B 1
 
-// Pin Assignments //
-// Don't change these! These pins are statically defined by shield layout
-//const byte PWMA = 3;  // PWM control (speed) for motor A
-//const byte PWMB = 11; // PWM control (speed) for motor B
-//const byte DIRA = 12; // Direction control for motor A
-//const byte DIRB = 13; // Direction control for motor B
+const int STBY = 9;
 
-// when hit wired with usb shield
-const byte PWMA = 3;  // PWM control (speed) for motor A
-const byte PWMB = 5; // PWM control (speed) for motor B
-const byte DIRA = 2; // Direction control for motor A
-const byte DIRB = 4; // Direction control for motor B
+// Motor A
+const int PWMA = 3; // speed control
+const int AIN1 = 2; // direction
+const int AIN2 = 4; // direction
+
+// Motor B
+const int PWMB = 6; // speed control
+const int BIN1 = 5; // direction
+const int BIN2 = 10; // direction
 
 USB Usb;
 //USBHub Hub1(&Usb); // Some dongles have a hub inside
@@ -50,12 +48,10 @@ WII Wii(&Btd, PAIR); // This will start an inquiry and then pair with your Wiimo
 
 void setup()
 {
-  
   Serial.begin(9600);
 
   setupWiimote();
   setupArdumoto(); // Set all pins as outputs
-  delay(5000);
 }
 
 bool enabled = false;
@@ -63,6 +59,12 @@ bool enabled = false;
 void loop(){
   Usb.Task();
 
+  Serial.println("start");
+  move(1, 255, 1); //motor 1, full speed, left
+  move(2, 255, 1); //motor 2, full speed, left
+  Serial.println("end");
+  delay(2000);
+  
   if (Wii.wiimoteConnected) {
 
     if(enabled){
@@ -92,20 +94,20 @@ void loop(){
       Serial.println();
   
       if(val == 0){
-        stopArdumoto(MOTOR_A);
-        stopArdumoto(MOTOR_B);
+        stop();
+        stop();
       }else{
         val = val * 2;
         if(val > 0){
           // forward
-          driveArdumoto(MOTOR_A, CW, val);
-          driveArdumoto(MOTOR_B, CW, val);
+          move(MOTOR_A, CW, val);
+          move(MOTOR_B, CW, val);
         }else{
           // backwards
           val = val * -1;
           Serial.println(val);
-          driveArdumoto(MOTOR_A, CCW, val);
-          driveArdumoto(MOTOR_B, CCW, val);
+          move(MOTOR_A, CCW, val);
+          move(MOTOR_B, CCW, val);
         }
       }
           
@@ -121,46 +123,56 @@ void loop(){
     }
     
   }else{
-    stopArdumoto(MOTOR_A);
-    stopArdumoto(MOTOR_B);  
+    stop();  
   }
 }
 
-// driveArdumoto drives 'motor' in 'dir' direction at 'spd' speed
-void driveArdumoto(byte motor, byte dir, byte spd)
+void move(int motor, int direction, int speed)
 {
-  if (motor == MOTOR_A)
-  {
-    digitalWrite(DIRA, dir);
-    analogWrite(PWMA, spd);
+  //Move specific motor at speed and direction
+  //motor: 0 for B 1 for A
+  //speed: 0 is off, and 255 is full speed
+  //direction: 0 clockwise, 1 counter-clockwise
+
+  digitalWrite(STBY, HIGH); //disable standby
+
+  boolean inPin1 = LOW;
+  boolean inPin2 = HIGH;
+
+  if(direction == 1){
+    inPin1 = HIGH;
+    inPin2 = LOW;
   }
-  else if (motor == MOTOR_B)
-  {
-    digitalWrite(DIRB, dir);
-    analogWrite(PWMB, spd);
-  }  
+
+  if(motor == 1){
+    digitalWrite(AIN1, inPin1);
+    digitalWrite(AIN2, inPin2);
+    analogWrite(PWMA, speed);
+  }else{
+    digitalWrite(BIN1, inPin1);
+    digitalWrite(BIN2, inPin2);
+    analogWrite(PWMB, speed);
+  }
 }
 
-// stopArdumoto makes a motor stop
-void stopArdumoto(byte motor)
+void stop()
 {
-  driveArdumoto(motor, 0, 0);
+  //enable standby  
+  digitalWrite(STBY, LOW); 
 }
 
 // setupArdumoto initialize all pins
 void setupArdumoto()
 {
-  // All pins should be setup as outputs:
-  pinMode(PWMA, OUTPUT);
-  pinMode(PWMB, OUTPUT);
-  pinMode(DIRA, OUTPUT);
-  pinMode(DIRB, OUTPUT);
+  pinMode(STBY, OUTPUT);
 
-  // Initialize all pins as low:
-  digitalWrite(PWMA, LOW);
-  digitalWrite(PWMB, LOW);
-  digitalWrite(DIRA, LOW);
-  digitalWrite(DIRB, LOW);
+  pinMode(PWMA, OUTPUT);
+  pinMode(AIN1, OUTPUT);
+  pinMode(AIN2, OUTPUT);
+  
+  pinMode(PWMB, OUTPUT);
+  pinMode(BIN1, OUTPUT);
+  pinMode(BIN2, OUTPUT);
 }
 
 void setupWiimote(){
