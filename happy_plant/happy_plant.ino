@@ -10,7 +10,8 @@ int moistureSensor = A0;
 int moisture;
 // change this value depending on plant type
 // or sensitivity needed
-int good_soil_moisture = 500;
+int okay_soil_moisture = 650;
+int happy_soil_moisture = 500;
 
 // put LED displays in arrays
 byte happy[]={
@@ -22,6 +23,17 @@ byte happy[]={
     B11000010,
     B11000100,
     B00001000
+};
+
+byte okay[]={
+    B00000010,
+    B11000010,
+    B11000010,
+    B00010010,
+    B00010010,
+    B11000010,
+    B11000010,
+    B00000010
 };
 
 byte sad[]={
@@ -39,6 +51,8 @@ void setup() {
   lc.shutdown(0, false); // wakup display
   lc.setIntensity(0, 5); // display brightness
   lc.clearDisplay(0); // clear display
+
+  Serial.begin(9600);
 }
 
 void loop() {
@@ -47,8 +61,13 @@ void loop() {
   // otherwise, make a sad face
 
   moisture = analogRead(moistureSensor);
-  if(moisture <= good_soil_moisture){
+
+  Serial.println(moisture);
+
+  if(moisture <= happy_soil_moisture){
     writeLedControl(happy);
+  }else if(moisture <= okay_soil_moisture){
+    writeLedControl(okay);
   }else{
     writeLedControl(sad);
   }
