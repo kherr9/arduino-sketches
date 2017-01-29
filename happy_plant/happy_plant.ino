@@ -48,22 +48,17 @@ void loop() {
 
   moisture = analogRead(moistureSensor);
   if(moisture <= good_soil_moisture){
-    happyface();
+    writeLedControl(happy);
   }else{
-    sadface();  
+    writeLedControl(sad);
   }
 
   delay(delayTime);
 }
 
-void happyface(){
+void writeLedControl(byte matrix[]){
   for(int i = 0; i < 8; i++){
-    lc.setRow(0, i, happy[i]);
-  }  
+    lc.setRow(0, i, matrix[i]);
+  }
 }
 
-void sadface(){
-  for(int i = 0; i < 8; i++){
-    lc.setRow(0, i, sad[i]);  
-  }  
-}
